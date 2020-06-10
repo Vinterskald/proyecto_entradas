@@ -1,0 +1,51 @@
+/*
+Index
+
+-Estilo general:
+*/
+body{
+	background-color: black;
+}
+/*-Título_*/
+header{
+	background: grey;
+  	text-align: center;
+  	padding: 20px;
+  	color: white;
+  	border: solid white 1px;
+  	text-shadow: black 0.1em 0.1em 0.2em;
+}
+/*-Navegador:*/
+nav li{
+	display: inline-block;
+	list-style-type: none;	
+}
+
+#menu{
+	margin-right: 10px;
+}
+
+#menu a{
+	text-decoration: none;
+	color: #808080;
+	margin: 15px;
+}
+
+#menu button{
+	padding: 5px;
+}
+
+/*--------------------------------------------------------------------------------------*/
+/*Contenedor*/
+.contenedor{
+	margin: 0 auto;
+	text-align: center;
+	padding: 20px;
+ 	width: fit-content;
+ 	color: white;
+  	background: grey;
+  	border: solid white 1px;
+}
+.contenedor table{
+	margin: 0 auto;
+}

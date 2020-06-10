@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Ticket Finder - Login</title>
+    	<link href="../web/css/estilos.css" rel="stylesheet" type="text/css"/>
+        <script type="text/javascript" src="./web/js/funciones.js"></script>
+	</head>
+	<body>
+		<div id="login" class="contenedor">
+			<h3>Introduce nombre de usuario y contraseña:</h3>
+			<form action="index.php" method="POST">
+				<table>
+					<tr>
+						<td>Usuario:</td>
+						<td><input type="text" name="username" required/></td>
+					</tr>
+					<tr>
+						<td>Contraseña:</td>
+						<td><input type="password" name="pass" required/></td>
+					</tr>
+				</table>
+				<input type="submit" value="Entrar"/>
+			</form>
+			<br>
+        	<a href="../index.php" style="text-decoration: none;"><button style="display:inline-block; margin-right: 5em;">Volver</button></a>
+        	<a href="registro.html" style="text-decoration: none;"><button>Registrarse</button></a>
+		</div>
+	</body>
+</html>

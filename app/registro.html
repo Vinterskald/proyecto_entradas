@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Ticket Finder - Registro</title>
+    	<link href="../web/css/estilos.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+		<div class="contenedor">
+    		<form id="registro" action="index.php" method="POST">
+            	<table>
+            		<tr>
+            			<td>Nombre de usuario:</td>
+            			<td><input type="text" name="user" required></td>
+            		</tr>
+            		<tr>
+            			<td>Contraseña:</td>
+            			<td><input type="password" name="pass" required></td>
+            		</tr>
+            		<tr>
+            			<td>Repite la contraseña:</td>
+            			<td><input type="password" name="pass2" required></td>
+            		</tr>
+            		<tr>
+            			<td>Nombre:</td>
+            			<td><input type="text" name="nombre" required></td>
+            		</tr>
+            		<tr>
+            			<td>Apellido(s):</td>
+            			<td><input type="text" name="apell" required></td>
+            		</tr>
+            		<tr>
+            			<td>Correo:</td>
+            			<td><input type="email" name="mail" required></td>
+            		</tr>
+            		<tr>
+            			<td>Dirección:</td>
+            			<td><input type="text" name="dir" required></td>
+            		</tr>
+            	</table>
+            	<br>
+            	<input type="submit" value="Crear usuario">
+            </form>
+            <br>
+        	<a href="../index.php" style="text-decoration: none;"><button style="text-align: center;">Volver</button></a>
+    	</div>
+	</body>
+</html>	
