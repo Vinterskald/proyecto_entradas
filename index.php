@@ -54,6 +54,42 @@
     	<title>Ticket Finder - Proyecto Víctor Viloria Iberti 2DAW</title>
     	<link href="./web/css/estilos.css" rel="stylesheet" type="text/css"/>
         <script type="text/javascript" src="./web/js/jquery-3.5.1.js"></script>
+        <script type="text/javascript">
+          	//Función para llamadas de AJAX a los archivos de contenido:
+        	function cargarContenido(pag){
+        		document.getElementById("busqueda").style.display="none";
+            	document.getElementById("contenido").style.display="block";
+        		//alert(pag);
+        		var xhttp = new XMLHttpRequest();
+        		xhttp.onreadystatechange = function(){
+        			//alert(this.readyState);
+        			//alert(this.status);
+        			if(this.readyState == 4 && this.status == 200){
+        				document.getElementById("contenido").innerHTML = this.responseText;
+        			}
+        		};
+        		switch(pag){
+        			case "principal":
+        				xhttp.open("GET", "app/contenido/principal.html", true);
+        				break;
+        			/*case "buscar":
+        				xhttp.open("GET", "app/contenido/buscar.html", true);
+        				break;*/
+        			case "info":
+        				xhttp.open("GET", "app/contenido/info.html", true);
+        				break;
+        		}
+        		xhttp.send();
+        	}
+        	//Función para desconectar usuario:
+        	function logout(){
+            	window.location.href = "./app/contenido/logout.php";		
+            }
+            function VerCapaBuscar(){
+            	document.getElementById("busqueda").style.display="block";
+            	document.getElementById("contenido").style.display="none";
+            }
+        </script>
     </head>
     <body>
     	<div id="interfaz">
@@ -65,77 +101,90 @@
     			<!-- Bloque para la barra de navegación -->
     			<nav id="menu">
     				<ul>
-    					<li><a href=""><button onClick="cargarContenido('principal')">Principal</button></a></li>
-    					<li><a href=""><button onClick="cargarContenido('buscar')">Buscar eventos</button></a></li>
-    					<li><a href=""><button onClick="cargarContenido('info')">Sobre Ticket Finder</button></a></li>
+    					<li><a href="#"><button onClick="cargarContenido('principal')">Principal</button></a></li>
+    					<li><a href="#"><button onClick="VerCapaBuscar()">Buscar eventos</button></a></li>
+    					<li><a href="#"><button onClick="cargarContenido('info')">Sobre Ticket Finder</button></a></li>
     					<?php
     					   if(!isset($_SESSION["usuario"])){
     					       echo "<li><a href='app/login.html'><button>Registrarse o acceder</button></a></li>";
     					   }else{
-    					       echo "<li><a href=''><button onClick='logout()'>Bienvenido/a, ".$_SESSION["usuario"]["cuenta"]."</button></a></li>";
+    					       echo "<li><a href='#'><button onClick='logout()'>Bienvenido/a, ".$_SESSION["usuario"]["cuenta"]."</button></a></li>";
     					   }
     					?>
     				</ul>
     			</nav>
     		</header>
     		<br>
+    		<!-- El bloque de búsqueda tiene que estar presente en el DOM del documento, pero se oculta
+    		 hasta que se llama a su función de JS. -->
+    		<div id="busqueda" class="contenedor" style="display:none;">
+            	<table>
+                	<tr>
+                    	<td>Nombre del artista:</td>
+                        <td><input type="text" id="artista" required></td>
+                    </tr>
+                    <tr>
+                    	<td>Localidad del evento:</td>
+                       	<td><input type="text" id="lugar" required></td>
+                    </tr>
+                    <tr>
+                    	<td>Fecha:</td>	
+                       	<td><input type="date" id="fecha" required></td>
+                    </tr>
+            	</table>
+            	<details>
+                	<p>Se buscarán eventos de la fecha seleccionada en adelante.</p>
+                </details>
+                <br>
+                <button type="button" id="busca" name="busca">Buscar</button>
+            </div>
     		<!-- Bloque de contenido dinámico (AJAX) -->
     		<div id="contenido" class="contenedor">
     			<?php
-    			     include_once("app/contenido/principal.html"); 
+    			    echo file_get_contents("./app/contenido/principal.html");
     			?>
     		</div>
     	</div>
     </body>
     <script type="text/javascript">
-    	//Función para el resto de llamadas de AJAX:
-    	function cargarContenido(pag){
-    		//alert(pag);
-    		var xhttp = new XMLHttpRequest();
-    		xhttp.onreadystatechange = function(){
-    			//alert(this.readyState);
-    			//alert(this.status);
-    			if(this.readyState == 4 && this.status == 200){
-    				document.getElementById("contenido").innerHTML = this.responseText;
-    			}
-    		};
-    		switch(pag){
-    			case "principal":
-    				xhttp.open("GET", "app/contenido/principal.html", true);
-    				break;
-    			case "buscar":
-    				xhttp.open("GET", "app/contenido/buscar.php", true);
-    				break;
-    			case "info":
-    				xhttp.open("GET", "app/contenido/info.html", true);
-    				break;
-    		}
-    		xhttp.send();
-    	}
+    	//Función para la llamada a AJAX desde JQuery:
+    	$('#busca').on("click", function(){
+        	var key = "";
+        	var artista = $("#artista").val();
+			var lugar = $("#lugar").val();
+			var fecha = $("#fecha").val();
 
-    	function logout(){
-        	window.location.href = "./app/contenido/logout.php";		
-        }
-    	//------------------------------------------------------------------------
-    	//Bloque para la llamada a AJAX desde JQuery:
-    	var request = $.ajax({
-        		url: 'https://api.songkick.com/api/30.0/events/{event_id}.json?apikey={key}',
+			if(artista === "" || lugar === "" || fecha === ""){
+				alert("Todos los campos del formulario de búsqueda tienen que tener un valor.");
+				return;
+			}
+        	
+    		var request = $.ajax({
+        		url: 'https://api.songkick.com/api/30.0/events.json?apikey='+key+'&artist_name='+artista+'&location='+lugar+'&min_date='+fecha,
         		method: 'GET'
         	});
-
-    	request.done(function(data){
-        	alert(data);
-        	if(data.count <= 0){
-            	//
-            }else{
-            	for(var i = 0; i < data.results.length; i++){
-            		//
-            	}
-            }
-    	});
-
-    	request.fail(function(error){
-        	alert("Error: "+error);
-        });
+    
+        	request.done(function(data){
+            	//Solo en caso de haber hecho correctamente la request (aunque no devuelva nada) se 
+            	//vuelve a ver el bloque de contenido en lugar del formulario de búsqueda.
+        		document.getElementById("busqueda").style.display="none";
+            	document.getElementById("contenido").style.display="block";
+            	alert(data);
+            	if(data.count <= 0){
+                	var resp = "<br>No se ha encontrado ningún resultado.<br>";
+                	$("#contenido").html(resp);
+                }else{
+                    var resultado = "<ul>";
+                	for(var i = 0; i < data.results.length; i++){
+                		//Generar tabla con datos...
+                	}
+                	resultado += "</ul>";
+                	$("#contenido").html(resultado);
+                }
+        	});
+        	request.fail(function(error){
+            	alert("Error: "+error);
+            });
+    	}); 
     </script>
 </html>
