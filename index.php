@@ -34,7 +34,8 @@
                     ";
                 }else{
                     $userData = Modelo::userGet($cuenta);
-                    $user [] = new usuarios($userData);
+					//print_r($userData);
+                    $user = new usuarios($userData);
                     $_SESSION["usuario"] = $user;
                 }
             }
@@ -81,10 +82,6 @@
         		}
         		xhttp.send();
         	}
-        	//Función para desconectar usuario:
-        	function logout(){
-            	window.location.href = "./app/contenido/logout.php";		
-            }
             function VerCapaBuscar(){
             	document.getElementById("busqueda").style.display="block";
             	document.getElementById("contenido").style.display="none";
@@ -108,7 +105,7 @@
     					   if(!isset($_SESSION["usuario"])){
     					       echo "<li><a href='app/login.html'><button>Registrarse o acceder</button></a></li>";
     					   }else{
-    					       echo "<li><a href='#'><button onClick='logout()'>Bienvenido/a, ".$_SESSION["usuario"]["cuenta"]."</button></a></li>";
+    					       echo "<li><a href='./app/contenido/logout.php'><button>Bienvenido/a, ".$_SESSION["usuario"]->getCuenta()."</button></a></li>";
     					   }
     					?>
     				</ul>

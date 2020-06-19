@@ -153,7 +153,7 @@
             $stmt->execute();
             if($stmt->rowCount() > 0){
                 while($fila = $stmt->fetch()){
-                    $userVista = [$fila["ID"], $fila["Cuenta"], $fila["Contraseña"], $fila["Nombre"], $fila["Apellidos"], $fila["Correo"], $fila["Dirección"]];
+                    $userVista = [$fila["ID"], $fila["Contraseña"], $fila["Nombre"], $fila["Apellidos"], $fila["Cuenta"], $fila["Correo"], $fila["Dirección"]];
                 }
                 return $userVista;
             }
